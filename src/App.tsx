@@ -16,8 +16,8 @@ import {
   Typography,
 } from '@mui/material';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { useStore } from './lib/StoreContext';
-import { useCart } from './lib/CartContext';
+import { useStore } from './context/StoreContext';
+import { useCart } from './context/CartContext';
 import { CatalogPage } from './pages/CatalogPage';
 import { ProductPage } from './pages/ProductPage';
 import { CartPage } from './pages/CartPage';

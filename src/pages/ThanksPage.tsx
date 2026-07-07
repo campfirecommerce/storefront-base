@@ -10,8 +10,8 @@ import {
   Typography,
 } from '@mui/material';
 import type { Checkout } from '@campfirecommerce/store-client';
-import { useStore } from '../lib/StoreContext';
-import { useCart } from '../lib/CartContext';
+import { useStore } from '../context/StoreContext';
+import { useCart } from '../context/CartContext';
 
 const POLL_INTERVAL_MS = 2000;
 const MAX_POLLS = 60; // give the Stripe webhook up to ~2 minutes

@@ -17,7 +17,7 @@ import {
   Typography,
 } from '@mui/material';
 import type { ProductListResponse, StorefrontProduct } from '@campfirecommerce/store-client';
-import { useStore } from '../lib/StoreContext';
+import { useStore } from '../context/StoreContext';
 
 const PER_PAGE = 12;
 const IMAGE_FALLBACK = 'https://placehold.co/400x300?text=No+image';

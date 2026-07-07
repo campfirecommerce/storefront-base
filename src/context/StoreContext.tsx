@@ -7,7 +7,7 @@ import {
   type ReactNode,
 } from 'react';
 import { StoreClient, StoreApiError, type StorefrontStore } from '@campfirecommerce/store-client';
-import { formatMoney } from './format';
+import { formatMoney } from '../utils/format';
 
 interface StoreContextValue {
   client: StoreClient;

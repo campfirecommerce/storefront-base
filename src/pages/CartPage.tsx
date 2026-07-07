@@ -16,8 +16,8 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { StoreApiError } from '@campfirecommerce/store-client';
-import { useStore } from '../lib/StoreContext';
-import { useCart } from '../lib/CartContext';
+import { useStore } from '../context/StoreContext';
+import { useCart } from '../context/CartContext';
 
 export function CartPage() {
   const { money } = useStore();

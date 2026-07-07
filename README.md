@@ -41,8 +41,9 @@ the portal and this app follows.
 ## Project layout
 
 ```
-src/lib/       StoreContext (store settings + client), CartContext
+src/context/   StoreContext (store settings + client), CartContext
                (checkout lifecycle, localStorage persistence), theming
+src/utils/     money formatting
 src/pages/     Catalog, Product, Cart, Checkout (Stripe Payment Element),
                Thanks (order confirmation)
 ```

@@ -15,8 +15,8 @@ import {
   Typography,
 } from '@mui/material';
 import { StoreApiError, type StorefrontProduct } from '@campfirecommerce/store-client';
-import { useStore } from '../lib/StoreContext';
-import { useCart } from '../lib/CartContext';
+import { useStore } from '../context/StoreContext';
+import { useCart } from '../context/CartContext';
 
 const IMAGE_FALLBACK = 'https://placehold.co/600x450?text=No+image';
 

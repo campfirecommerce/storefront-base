@@ -4,8 +4,8 @@ import { Alert, Button, Grid, Link, Stack, TextField, Typography } from '@mui/ma
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { StoreApiError, type Address } from '@campfirecommerce/store-client';
-import { useStore } from '../lib/StoreContext';
-import { useCart } from '../lib/CartContext';
+import { useStore } from '../context/StoreContext';
+import { useCart } from '../context/CartContext';
 
 export function CheckoutPage() {
   const { store, money } = useStore();

@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { StoreProvider } from './lib/StoreContext';
-import { StoreThemeProvider } from './lib/StoreThemeProvider';
-import { CartProvider } from './lib/CartContext';
+import { StoreProvider } from './context/StoreContext';
+import { StoreThemeProvider } from './context/StoreThemeProvider';
+import { CartProvider } from './context/CartContext';
 import { App } from './App';
 // Self-hosted Roboto for MUI's default typography.
 import '@fontsource/roboto/300.css';
