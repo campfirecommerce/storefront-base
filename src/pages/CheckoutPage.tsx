@@ -26,9 +26,13 @@ export function CheckoutPage() {
 
   // Load Stripe.js once, with the publishable key the backend serves at
   // runtime (GET /storefront/store), so clones need no rebuild per store.
+  // Stores on Stripe Connect take direct charges on their own account, so
+  // Stripe.js must initialize with that account for the intent to resolve.
   const stripePromise = useMemo(() => {
     const key = store?.stripe_publishable_key;
-    return key ? loadStripe(key) : null;
+    if (!key) return null;
+    const account = store?.stripe_account_id;
+    return loadStripe(key, account ? { stripeAccount: account } : undefined);
   }, [store]);
 
   const requiresShipping =
