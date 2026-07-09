@@ -24,8 +24,15 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   // In local dev there is no registered Origin, so a storefront API key is
   // pasted into .env.local. Production builds omit it: the backend resolves
   // the store from the site's domain.
+  // Self-hosted builds (e.g. GitHub Pages) set VITE_API_BASE_URL so calls
+  // reach the Campfire API instead of the static host; hosted builds leave
+  // it unset and call same-origin /api/store.
   const client = useMemo(
-    () => new StoreClient({ storeKey: import.meta.env.VITE_STORE_KEY || undefined }),
+    () =>
+      new StoreClient({
+        baseUrl: import.meta.env.VITE_API_BASE_URL || undefined,
+        storeKey: import.meta.env.VITE_STORE_KEY || undefined,
+      }),
     [],
   );
   const [store, setStore] = useState<StorefrontStore | null>(null);

@@ -75,7 +75,7 @@ export function ThanksPage() {
 
   if (!token) {
     return (
-      <Stack spacing={1} sx={{ alignItems: 'flex-start', mt: 4 }}>
+      <Stack spacing={1} sx={{ alignItems: 'flex-start', maxWidth: 560, mx: 'auto', mt: 4 }}>
         <Typography variant="h5" component="h1">
           Order status
         </Typography>
@@ -88,7 +88,7 @@ export function ThanksPage() {
   }
 
   return (
-    <Stack spacing={2} sx={{ alignItems: 'flex-start', maxWidth: 560, mt: 4 }}>
+    <Stack spacing={2} sx={{ alignItems: 'flex-start', maxWidth: 560, mx: 'auto', mt: 4 }}>
       {phase === 'polling' && (
         <Box sx={{ alignSelf: 'center' }}>
           <Stack spacing={1.5} sx={{ alignItems: 'center' }}>

@@ -21,7 +21,6 @@ import { useCart } from './context/CartContext';
 import { CatalogPage } from './pages/CatalogPage';
 import { ProductPage } from './pages/ProductPage';
 import { CartPage } from './pages/CartPage';
-import { CheckoutPage } from './pages/CheckoutPage';
 import { ThanksPage } from './pages/ThanksPage';
 
 export function App() {
@@ -86,7 +85,8 @@ export function App() {
             <Route path="/" element={<CatalogPage />} />
             <Route path="/p/:slug" element={<ProductPage />} />
             <Route path="/cart" element={<CartPage />} />
-            <Route path="/checkout" element={<CheckoutPage />} />
+            {/* Payment happens on Stripe-hosted Checkout; old links land on the cart. */}
+            <Route path="/checkout" element={<Navigate to="/cart" replace />} />
             <Route path="/thanks" element={<ThanksPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

@@ -20,8 +20,8 @@ import { useStore } from '../context/StoreContext';
 import { useCart } from '../context/CartContext';
 
 export function CartPage() {
-  const { money } = useStore();
-  const { checkout, busy, setQuantity, removeItem } = useCart();
+  const { store, money } = useStore();
+  const { checkout, busy, setQuantity, removeItem, pay } = useCart();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
@@ -31,6 +31,25 @@ export function CartPage() {
       await fn();
     } catch (err) {
       setError(err instanceof StoreApiError ? err.message : 'Could not update the cart');
+    }
+  };
+
+  // Hand off to Stripe-hosted Checkout; Stripe collects email, shipping
+  // address and payment, then returns the customer to /thanks.
+  const handleCheckout = async () => {
+    setError(null);
+    try {
+      const res = await pay();
+      window.location.assign(res.url);
+    } catch (err) {
+      // 410 = this checkout was already paid; show the confirmation.
+      if (err instanceof StoreApiError && err.status === 410 && checkout) {
+        navigate(`/thanks?token=${encodeURIComponent(checkout.token)}`);
+        return;
+      }
+      setError(
+        err instanceof StoreApiError ? err.message : 'Could not start checkout, please try again',
+      );
     }
   };
 
@@ -49,7 +68,7 @@ export function CartPage() {
   }
 
   return (
-    <Stack spacing={2} sx={{ maxWidth: 720 }}>
+    <Stack spacing={2} sx={{ maxWidth: 720, mx: 'auto' }}>
       <Typography variant="h5" component="h1">
         Your cart
       </Typography>
@@ -119,11 +138,21 @@ export function CartPage() {
         <Typography sx={{ fontWeight: 600 }}>Total: {money(checkout.total_cents)}</Typography>
       </Stack>
 
+      {store && !store.checkout_enabled && (
+        <Alert severity="info">
+          This store isn't accepting payments yet, so checkout is temporarily unavailable.
+        </Alert>
+      )}
+
       <Stack direction="row" spacing={1.5} sx={{ justifyContent: 'flex-end' }}>
         <Button variant="outlined" component={RouterLink} to="/">
           Keep shopping
         </Button>
-        <Button variant="contained" onClick={() => navigate('/checkout')} disabled={busy}>
+        <Button
+          variant="contained"
+          onClick={() => void handleCheckout()}
+          disabled={busy || !store?.checkout_enabled}
+        >
           Check out
         </Button>
       </Stack>

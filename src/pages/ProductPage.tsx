@@ -173,7 +173,7 @@ export function ProductPage() {
             slotProps={{
               htmlInput: { min: 1, max: variant?.available || undefined },
             }}
-            sx={{ maxWidth: 120 }}
+            sx={{ width: 120 }}
           />
 
           <Button

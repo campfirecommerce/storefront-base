@@ -9,7 +9,6 @@ import {
 } from 'react';
 import {
   StoreApiError,
-  type Address,
   type Checkout,
   type CheckoutLineInput,
   type PayResponse,
@@ -27,9 +26,7 @@ interface CartContextValue {
   addItem: (variantId: number, quantity: number) => Promise<void>;
   setQuantity: (variantId: number, quantity: number) => Promise<void>;
   removeItem: (variantId: number) => Promise<void>;
-  /** Attach email + shipping address before payment. */
-  setContact: (email: string, address?: Address) => Promise<Checkout>;
-  /** Request a Stripe client_secret for the current checkout. */
+  /** Create the Stripe-hosted Checkout Session; redirect to its url. */
   pay: () => Promise<PayResponse>;
   /** Forget the current checkout (e.g. after a completed order). */
   clear: () => void;
@@ -151,20 +148,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
     [setQuantity],
   );
 
-  const setContact = useCallback(
-    (email: string, address?: Address) =>
-      withBusy(async () => {
-        if (!checkout) throw new Error('cart is empty');
-        const res = await client.updateCheckout(checkout.token, {
-          email,
-          shipping_address: address,
-        });
-        adopt(res.checkout);
-        return res.checkout;
-      }),
-    [client, checkout, adopt, withBusy],
-  );
-
   const pay = useCallback(
     () =>
       withBusy(async () => {
@@ -182,8 +165,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
   );
 
   const value = useMemo<CartContextValue>(
-    () => ({ checkout, busy, itemCount, addItem, setQuantity, removeItem, setContact, pay, clear }),
-    [checkout, busy, itemCount, addItem, setQuantity, removeItem, setContact, pay, clear],
+    () => ({ checkout, busy, itemCount, addItem, setQuantity, removeItem, pay, clear }),
+    [checkout, busy, itemCount, addItem, setQuantity, removeItem, pay, clear],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
