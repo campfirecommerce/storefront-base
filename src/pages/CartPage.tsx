@@ -9,6 +9,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TableRow,
   TextField,
@@ -74,58 +75,60 @@ export function CartPage() {
       </Typography>
       {error && <Alert severity="error">{error}</Alert>}
 
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Item</TableCell>
-            <TableCell>Price</TableCell>
-            <TableCell sx={{ width: 110 }}>Qty</TableCell>
-            <TableCell align="right">Total</TableCell>
-            <TableCell sx={{ width: 40 }} />
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {checkout.line_items.map((li) => (
-            <TableRow key={li.variant_id}>
-              <TableCell>
-                <Typography sx={{ fontWeight: 500 }}>{li.title}</Typography>
-                {li.variant_title && (
-                  <Typography variant="body2" color="text.secondary">
-                    {li.variant_title}
-                  </Typography>
-                )}
-              </TableCell>
-              <TableCell>{money(li.price_cents)}</TableCell>
-              <TableCell>
-                <TextField
-                  type="number"
-                  size="small"
-                  value={li.quantity}
-                  disabled={busy}
-                  slotProps={{ htmlInput: { min: 1, 'aria-label': 'Quantity' } }}
-                  onChange={(e) => {
-                    const qty = Number(e.target.value);
-                    if (Number.isFinite(qty) && qty >= 1 && qty !== li.quantity) {
-                      void mutate(() => setQuantity(li.variant_id, qty));
-                    }
-                  }}
-                />
-              </TableCell>
-              <TableCell align="right">{money(li.price_cents * li.quantity)}</TableCell>
-              <TableCell>
-                <IconButton
-                  size="small"
-                  aria-label="Remove item"
-                  disabled={busy}
-                  onClick={() => void mutate(() => removeItem(li.variant_id))}
-                >
-                  <CloseIcon fontSize="small" />
-                </IconButton>
-              </TableCell>
+      <TableContainer>
+        <Table sx={{ minWidth: 480 }}>
+          <TableHead>
+            <TableRow>
+              <TableCell>Item</TableCell>
+              <TableCell>Price</TableCell>
+              <TableCell sx={{ width: 110 }}>Qty</TableCell>
+              <TableCell align="right">Total</TableCell>
+              <TableCell sx={{ width: 40 }} />
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {checkout.line_items.map((li) => (
+              <TableRow key={li.variant_id}>
+                <TableCell>
+                  <Typography sx={{ fontWeight: 500 }}>{li.title}</Typography>
+                  {li.variant_title && (
+                    <Typography variant="body2" color="text.secondary">
+                      {li.variant_title}
+                    </Typography>
+                  )}
+                </TableCell>
+                <TableCell>{money(li.price_cents)}</TableCell>
+                <TableCell>
+                  <TextField
+                    type="number"
+                    size="small"
+                    value={li.quantity}
+                    disabled={busy}
+                    slotProps={{ htmlInput: { min: 1, 'aria-label': 'Quantity' } }}
+                    onChange={(e) => {
+                      const qty = Number(e.target.value);
+                      if (Number.isFinite(qty) && qty >= 1 && qty !== li.quantity) {
+                        void mutate(() => setQuantity(li.variant_id, qty));
+                      }
+                    }}
+                  />
+                </TableCell>
+                <TableCell align="right">{money(li.price_cents * li.quantity)}</TableCell>
+                <TableCell>
+                  <IconButton
+                    size="small"
+                    aria-label="Remove item"
+                    disabled={busy}
+                    onClick={() => void mutate(() => removeItem(li.variant_id))}
+                  >
+                    <CloseIcon fontSize="small" />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
       <Stack spacing={0.5} sx={{ alignItems: 'flex-end' }}>
         <Typography variant="body2">Subtotal: {money(checkout.subtotal_cents)}</Typography>

@@ -1,0 +1,25 @@
+---
+description: Campfire Commerce storefront — invariants and API guide
+alwaysApply: true
+---
+
+This is a Campfire Commerce storefront template (React 18 + TS + Vite +
+MUI). AGENTS.md at the repo root is the canonical guide: codebase map, the
+`@campfirecommerce/store-client` API reference, checkout lifecycle, and env
+vars. Read it before structural changes.
+
+Invariants:
+
+- Never compute or send prices from the client; the API reprices every
+  checkout server-side from `variant_id` + `quantity`.
+- Never add card forms or Stripe.js — payment is Stripe-hosted Checkout:
+  `useCart().pay()` returns `{ url }` to redirect to.
+- Keep `src/context/CartContext.tsx` and the `/thanks?token=` polling route
+  intact (or port their logic when restructuring).
+- Money is integer cents; format with `money(cents)` from `useStore()`.
+- Store identity (name, logo, `primary_color`, about, support email) comes
+  from `useStore().store.settings` — don't hardcode it.
+- Keep checkout actions disabled while `store.checkout_enabled` is false.
+
+Everything visual — layout, typography, theme, pages, animation — may be
+changed freely.

@@ -87,13 +87,21 @@ export function CartProvider({ children }: { children: ReactNode }) {
    */
   const putLines = useCallback(
     async (lines: CheckoutLineInput[]) => {
+      const current = checkout;
       if (lines.length === 0) {
-        // The API requires at least one line, so an emptied cart just
-        // abandons the checkout; its reservation expires server-side.
+        // The API requires at least one line, so an emptied cart cancels
+        // the checkout, releasing its stock reservations immediately.
+        if (current && current.status === 'open') {
+          try {
+            await client.cancelCheckout(current.token);
+          } catch (err) {
+            // Already expired or completed — nothing left to release.
+            if (!isStale(err)) throw err;
+          }
+        }
         clear();
         return;
       }
-      const current = checkout;
       try {
         if (current && current.status === 'open') {
           const res = await client.updateCheckout(current.token, { line_items: lines });

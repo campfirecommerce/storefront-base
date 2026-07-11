@@ -106,14 +106,14 @@ export function ProductPage() {
           sx={{ width: '100%', display: 'block', borderRadius: 2 }}
         />
         {(product.images?.length ?? 0) > 1 && (
-          <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+          <Stack direction="row" spacing={1} sx={{ mt: 1, overflowX: 'auto' }}>
             {product.images!.slice(1).map((src) => (
               <Box
                 key={src}
                 component="img"
                 src={src}
                 alt={product.title}
-                sx={{ width: 72, height: 72, objectFit: 'cover', borderRadius: 1 }}
+                sx={{ width: 72, height: 72, flexShrink: 0, objectFit: 'cover', borderRadius: 1 }}
               />
             ))}
           </Stack>
